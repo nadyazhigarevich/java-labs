@@ -2,11 +2,11 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Hello World</title>
+    <title>JSP - Multiply Number</title>
 </head>
 <body>
-<h1><%= "First servlet" %></h1>
-<form action="hello-servlet" method="get">
+<h1><%= "Multiply Number" %></h1>
+<form action="multiply" method="get">
     <input type="text" name="number" placeholder="Enter a number" required />
     <input type="submit" value="Submit" />
 </form>

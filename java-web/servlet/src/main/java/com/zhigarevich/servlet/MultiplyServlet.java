@@ -5,13 +5,13 @@ import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
-gi
-@WebServlet(name = "helloServlet", value = "/hello-servlet")
-public class HelloServlet extends HttpServlet {
-    private static final Logger logger = LogManager.getLogger(HelloServlet.class);
+
+@WebServlet(name = "multiplyServlet", value = "/multiply")
+public class MultiplyServlet extends HttpServlet {
+    private static final Logger logger = LogManager.getLogger(MultiplyServlet.class);
 
     public void init() {
-        logger.info("Servlet initialized");
+        logger.info("MultiplyServlet initialized");
     }
 
     public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException {
@@ -38,6 +38,6 @@ public class HelloServlet extends HttpServlet {
     }
 
     public void destroy() {
-        logger.info("Servlet destroyed");
+        logger.info("MultiplyServlet destroyed");
     }
 }
