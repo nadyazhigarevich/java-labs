@@ -1,0 +1,188 @@
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validation result for student: Student{id=6, lastName='Diana', firstName='Green', patronymic='Nikolayevich', dateOfBirth=Thu Jan 01 13:20:01 MSK 2026, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=2, group=1} is false
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validating student: Student{id=7, lastName='Eve', firstName='White', patronymic='Dmitrievich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='123456789', faculty='FPMI', course=2, group=1}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Name is valid: White
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Name is valid: Eve
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Patronymic is valid: Dmitrievich
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Date of Birth is valid: Sat Jan 01 13:20:01 MSK 2000
+2025-02-26 13:20:01 [main] ERROR
+            com.zhigarevich.student.validator.StudentValidator - Phone Number is invalid: 123456789
+2025-02-26 13:20:01 [main] WARN 
+            com.zhigarevich.student.validator.StudentValidator - Student is invalid: Student{id=7, lastName='Eve', firstName='White', patronymic='Dmitrievich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='123456789', faculty='FPMI', course=2, group=1}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validation result for student: Student{id=7, lastName='Eve', firstName='White', patronymic='Dmitrievich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='123456789', faculty='FPMI', course=2, group=1} is false
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validating student: Student{id=8, lastName='Frank', firstName='Black', patronymic='Petrovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=0, group=1}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Name is valid: Black
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Name is valid: Frank
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Patronymic is valid: Petrovich
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Date of Birth is valid: Sat Jan 01 13:20:01 MSK 2000
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Phone Number is valid: +1234567890
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Faculty is valid: FPMI
+2025-02-26 13:20:01 [main] ERROR
+            com.zhigarevich.student.validator.StudentValidator - Course is invalid: 0
+2025-02-26 13:20:01 [main] WARN 
+            com.zhigarevich.student.validator.StudentValidator - Student is invalid: Student{id=8, lastName='Frank', firstName='Black', patronymic='Petrovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=0, group=1}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validation result for student: Student{id=8, lastName='Frank', firstName='Black', patronymic='Petrovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=0, group=1} is false
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validating student: Student{id=9, lastName='Grace', firstName='Blue', patronymic='Sidorovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=2, group=11}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Name is valid: Blue
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Name is valid: Grace
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Patronymic is valid: Sidorovich
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Date of Birth is valid: Sat Jan 01 13:20:01 MSK 2000
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Phone Number is valid: +1234567890
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Faculty is valid: FPMI
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Course is valid: 2
+2025-02-26 13:20:01 [main] ERROR
+            com.zhigarevich.student.validator.StudentValidator - Group is invalid: 11
+2025-02-26 13:20:01 [main] WARN 
+            com.zhigarevich.student.validator.StudentValidator - Student is invalid: Student{id=9, lastName='Grace', firstName='Blue', patronymic='Sidorovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=2, group=11}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validation result for student: Student{id=9, lastName='Grace', firstName='Blue', patronymic='Sidorovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=2, group=11} is false
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validating student: Student{id=10, lastName='H@rry', firstName='Potter', patronymic='Ivanovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=2, group=1}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.validator.StudentValidator - Name is valid: Potter
+2025-02-26 13:20:01 [main] ERROR
+            com.zhigarevich.student.validator.StudentValidator - Name is invalid: H@rry
+2025-02-26 13:20:01 [main] WARN 
+            com.zhigarevich.student.validator.StudentValidator - Student is invalid: Student{id=10, lastName='H@rry', firstName='Potter', patronymic='Ivanovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=2, group=1}
+2025-02-26 13:20:01 [main] INFO 
+            com.zhigarevich.student.StudentValidatorTest - Validation result for student: Student{id=10, lastName='H@rry', firstName='Potter', patronymic='Ivanovich', dateOfBirth=Sat Jan 01 13:20:01 MSK 2000, address=Address{country='Street 1', city='City', street='Country'}, phoneNumber='+1234567890', faculty='FPMI', course=2, group=1} is false
+2025-02-26 13:20:18 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 3 students from faculty: FIS
+2025-02-26 13:20:18 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 2 students from faculty: FIS and course: 3
+2025-02-26 13:20:18 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 13 students born after year: 2000
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students by faculty: FMO
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 5 students from faculty: FMO
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully retrieved 5 students from faculty: FMO
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students from faculty: FMO and course: 4
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 3 students from faculty: FMO and course: 4
+2025-02-26 13:22:06 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully retrieved 3 students from faculty: FMO and course: 4
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students born after year: 2000
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 19 students born after year: 2000
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully retrieved 19 students born after year: 2000
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of all students...
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully verified that there are 30 students.
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students for non-existent faculty: FMO
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 5 students from faculty: FMO
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students born after current year: 2025
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 0 students born after year: 2025
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - No students found born after current year: 2025
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students from faculty: FIS with invalid course: 99
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 0 students from faculty: FIS and course: 99
+2025-02-26 13:22:07 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - No students found for faculty: FIS and invalid course: 99
+2025-02-26 13:24:04 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:24:04 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:24:04 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students for non-existent faculty: FPO
+2025-02-26 13:24:04 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 4 students from faculty: FPO
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students by faculty: FPO
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 8 students from faculty: FPO
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully retrieved 8 students from faculty: FPO
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students from faculty: FPH and course: 4
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 1 students from faculty: FPH and course: 4
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully retrieved 1 students from faculty: FPH and course: 4
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of students born after year: 2000
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.service.StudentServiceImpl - Retrieved 20 students born after year: 2000
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully retrieved 20 students born after year: 2000
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Setting up test data...
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Test data setup complete with 30 students.
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Testing retrieval of all students...
+2025-02-26 13:24:18 [main] INFO 
+            com.zhigarevich.student.StudentServiceImplTest - Successfully verified that there are 30 students.

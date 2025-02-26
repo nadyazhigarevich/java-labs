@@ -2,13 +2,14 @@
 <!DOCTYPE html>
 <html>
 <head>
-    <title>JSP - Multiply Number</title>
+    <title>Add Phone Book Entry</title>
 </head>
 <body>
-<h1><%= "Multiply Number" %></h1>
-<form action="multiply" method="get">
-    <input type="text" name="number" placeholder="Enter a number" required />
-    <input type="submit" value="Submit" />
+<h1>Add Phone Book Entry</h1>
+<form action="addEntry" method="post">
+    <input type="text" name="lastName" placeholder="Last Name" required />
+    <input type="text" name="phoneNumber" placeholder="Phone Number" required />
+    <input type="submit" value="Add Entry" />
 </form>
 <br/>
 </body>
