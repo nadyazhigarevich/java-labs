@@ -1,20 +1,20 @@
 package com.zhigarevich.student.entity;
 
-import java.util.Date;
+import java.time.LocalDate;
 
 public class Student {
     private long id;
     private String lastName;
     private String firstName;
     private String patronymic;
-    private Date dateOfBirth;
+    private LocalDate dateOfBirth;
     private Address address;
     private String phoneNumber;
     private Faculty faculty;
     private int course;
     private int group;
 
-    public Student(int id, String lastName, String firstName, String patronymic, Date dateOfBirth, Address address, String phoneNumber, Faculty faculty, int course, int group) {
+    public Student(int id, String lastName, String firstName, String patronymic, LocalDate dateOfBirth, Address address, String phoneNumber, Faculty faculty, int course, int group) {
         this.id = id;
         this.lastName = lastName;
         this.firstName = firstName;
@@ -28,7 +28,6 @@ public class Student {
     }
 
     public Student() {
-
     }
 
     public long getId() {
@@ -63,11 +62,11 @@ public class Student {
         this.patronymic = patronymic;
     }
 
-    public Date getDateOfBirth() {
+    public LocalDate getDateOfBirth() {
         return dateOfBirth;
     }
 
-    public void setDateOfBirth(Date dateOfBirth) {
+    public void setDateOfBirth(LocalDate dateOfBirth) {
         this.dateOfBirth = dateOfBirth;
     }
 
@@ -113,19 +112,18 @@ public class Student {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Student{");
-        sb.append("id=").append(id)
-                .append(", lastName='").append(lastName).append('\'')
-                .append(", firstName='").append(firstName).append('\'')
-                .append(", patronymic='").append(patronymic).append('\'')
-                .append(", dateOfBirth=").append(dateOfBirth)
-                .append(", address=").append(address)
-                .append(", phoneNumber='").append(phoneNumber).append('\'')
-                .append(", faculty='").append(faculty).append('\'')
-                .append(", course=").append(course)
-                .append(", group=").append(group)
-                .append('}');
-        return sb.toString();
+        return "Student{" +
+                "id=" + id +
+                ", lastName='" + lastName + '\'' +
+                ", firstName='" + firstName + '\'' +
+                ", patronymic='" + patronymic + '\'' +
+                ", dateOfBirth=" + dateOfBirth +
+                ", address=" + address +
+                ", phoneNumber='" + phoneNumber + '\'' +
+                ", faculty=" + faculty +
+                ", course=" + course +
+                ", group=" + group +
+                '}';
     }
 
     @Override

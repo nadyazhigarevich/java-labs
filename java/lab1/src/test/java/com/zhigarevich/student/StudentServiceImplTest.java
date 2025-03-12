@@ -5,90 +5,93 @@ import com.zhigarevich.student.entity.Student;
 import com.zhigarevich.student.factory.StudentFactory;
 import com.zhigarevich.student.service.StudentService;
 import com.zhigarevich.student.service.StudentServiceImpl;
-import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
+import org.junit.After;
+import org.junit.Before;
+import org.junit.Test;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.time.LocalDate;
 import java.util.List;
 
-import static org.junit.jupiter.api.Assertions.*;
+import static org.junit.Assert.*;
 
-class StudentServiceImplTest {
+public class StudentServiceImplTest {
+    private static final int STUDENT_COUNT = 30;
     private List<Student> students;
     private StudentService studentService;
 
-    @BeforeEach
-    void setUp() {
-        students = StudentFactory.createRandomStudents(30);
+    @Before
+    public void setUp() {
         studentService = new StudentServiceImpl();
+        students = StudentFactory.createRandomStudents(STUDENT_COUNT);
+        assertNotNull("Students list should not be null", students);
+        assertEquals("Expected number of students must match", STUDENT_COUNT, students.size());
+    }
+
+    @After
+    public void tearDown() {
+        students = null;
+        studentService = null;
     }
 
     @Test
-    void testGetStudentsByFaculty() {
+    public void testGetStudentsByFaculty() {
         Faculty facultyToTest = students.get(0).getFaculty();
-        List<Student> actual = studentService.getStudentsByFaculty(students, facultyToTest);
+        List<Student> actualStudents = studentService.findStudentsByFaculty(students, facultyToTest);
 
-        assertNotNull(actual);
-        assertFalse(actual.isEmpty());
-        for (Student s : actual) {
-            assertEquals(facultyToTest, s.getFaculty());
+        assertNotNull(actualStudents);
+        assertFalse(actualStudents.isEmpty());
+        for (Student student : actualStudents) {
+            assertEquals(facultyToTest, student.getFaculty());
         }
     }
 
     @Test
-    void testGetStudentsByFacultyAndCourse() {
+    public void testGetStudentsByFacultyAndCourse() {
         Faculty facultyToTest = students.get(0).getFaculty();
         int courseToTest = students.get(0).getCourse();
-        List<Student> actual = studentService.getStudentsByFacultyAndCourse(students, facultyToTest, courseToTest);
+        List<Student> actualStudents = studentService.findStudentsByFacultyAndCourse(students, facultyToTest, courseToTest);
 
-        assertNotNull(actual);
-        assertFalse(actual.isEmpty());
-        for (Student s : actual) {
-            assertEquals(facultyToTest, s.getFaculty());
-            assertEquals(courseToTest, s.getCourse());
+        assertNotNull(actualStudents);
+        assertFalse(actualStudents.isEmpty());
+        for (Student student : actualStudents) {
+            assertEquals(facultyToTest, student.getFaculty());
+            assertEquals(courseToTest, student.getCourse());
         }
     }
 
     @Test
-    void testGetStudentsBornAfter() {
+    public void testGetStudentsBornAfter() {
         int yearToTest = 2000;
-        List<Student> actual = studentService.getStudentsBornAfter(students, yearToTest);
+        List<Student> actualStudents = studentService.findStudentsBornAfter(students, yearToTest);
 
-        assertNotNull(actual);
-        for (Student s : actual) {
-            assertTrue(s.getDateOfBirth().after(createDate(yearToTest, 1, 1)));
+        assertNotNull(actualStudents);
+        for (Student student : actualStudents) {
+            assertTrue(student.getDateOfBirth().isAfter(LocalDate.of(yearToTest, 1, 1)));
         }
     }
 
     @Test
-    void testGetStudentsByFacultyAndCourseNoResults() {
+    public void testGetStudentsByFacultyAndCourseNoResults() {
         Faculty facultyToTest = students.get(0).getFaculty();
-        List<Student> actual = studentService.getStudentsByFacultyAndCourse(students, facultyToTest, 99);
+        List<Student> actualStudents = studentService.findStudentsByFacultyAndCourse(students, facultyToTest, 99);
 
-        assertNotNull(actual);
-        assertTrue(actual.isEmpty(), "Expected no students for an invalid course.");
+        assertNotNull(actualStudents);
+        assertTrue(actualStudents.isEmpty());
     }
 
     @Test
-    void testGetStudentsBornAfterEdgeCase() {
-        int yearToTest = Calendar.getInstance().get(Calendar.YEAR);
-        List<Student> actual = studentService.getStudentsBornAfter(students, yearToTest);
+    public void testGetStudentsBornAfterEdgeCase() {
+        int currentYear = LocalDate.now().getYear();
+        List<Student> actualStudents = studentService.findStudentsBornAfter(students, currentYear);
 
-        assertNotNull(actual);
-        assertTrue(actual.isEmpty(), "Expected no students born this year or later.");
+        assertNotNull(actualStudents);
+        assertTrue(actualStudents.isEmpty());
     }
 
     @Test
-    void testGetAllStudents() {
+    public void testGetAllStudents() {
         assertNotNull(students);
-        assertFalse(students.isEmpty(), "Students list should not be empty.");
-        assertEquals(30, students.size(), "Expected 30 students.");
-    }
-
-    private Date createDate(int year, int month, int day) {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(year, month - 1, day);
-        return calendar.getTime();
+        assertFalse(students.isEmpty());
+        assertEquals(STUDENT_COUNT, students.size());
     }
 }

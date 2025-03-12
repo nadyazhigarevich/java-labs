@@ -4,16 +4,18 @@ import com.zhigarevich.student.entity.Address;
 import com.zhigarevich.student.entity.Faculty;
 import com.zhigarevich.student.entity.Student;
 import com.zhigarevich.student.validator.StudentValidator;
+import org.junit.After;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.junit.runners.Parameterized;
 
+import java.time.LocalDate;
 import java.util.Arrays;
-import java.util.Calendar;
 import java.util.Collection;
-import java.util.Date;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.assertFalse;
 
 @RunWith(Parameterized.class)
 public class StudentValidatorTest {
@@ -29,102 +31,44 @@ public class StudentValidatorTest {
     @Parameterized.Parameters
     public static Collection<Object[]> data() {
         return Arrays.asList(new Object[][]{
-                {createValidStudent(), true},
-                {createInvalidStudentWithEmptyName(), false},
-                {createInvalidStudentWithEmptyLastName(), false},
-                {createInvalidStudentWithEmptyPatronymic(), false},
-                {createInvalidStudentWithFutureDOB(), false},
-                {createInvalidStudentWithFutureDOBDifferentYear(), false},
-                {createInvalidStudentWithInvalidPhone(), false},
-                {createInvalidStudentWithInvalidCourseNumber(), false},
-                {createInvalidStudentWithInvalidGroupNumber(), false},
-                {createInvalidStudentWithSpecialCharactersInName(), false}
+                {createStudent("John", "Doe", "Ivanovich", 2000, 1, 1, "+1234567890", Faculty.FPMI, 2, 1), true},
+                {createStudent("", "Doe", "Ivanovich", 2000, 1, 1, "+1234567890", Faculty.FPMI, 2, 1), false},
+                {createStudent("Alice", "", "Petrovich", 2000, 1, 1, "+1234567890", Faculty.FPMI, 2, 1), false},
+                {createStudent("Bob", "Johnson", "", 2000, 1, 1, "+1234567890", Faculty.FPMI, 2, 1), false},
+                {createStudent("Charlie", "Brown", "Sidorovich", 2026, 1, 1, "+1234567890", Faculty.FPMI, 2, 1), false},
+                {createStudent("Diana", "Green", "Nikolayevich", 2026, 1, 1, "+1234567890", Faculty.FPMI, 2, 1), false},
+                {createStudent("Eve", "White", "Dmitrievich", 2000, 1, 1, "123456789", Faculty.FPMI, 2, 1), false},
+                {createStudent("Frank", "Black", "Petrovich", 2000, 1, 1, "+1234567890", Faculty.FPMI, 0, 1), false},
+                {createStudent("Grace", "Blue", "Sidorovich", 2000, 1, 1, "+1234567890", Faculty.FPMI, 2, 11), false},
+                {createStudent("H@rry", "Potter", "Ivanovich", 2000, 1, 1, "+1234567890", Faculty.FPMI, 2, 1), false}
         });
+    }
+
+    @Before
+    public void setUp() {
+    }
+
+    @After
+    public void tearDown() {
+        student = null;
     }
 
     @Test
     public void testStudentValidation() {
-        boolean actual = StudentValidator.isValidStudent(student);
-        assertEquals(expectedValidity, actual);
+        if (expectedValidity) {
+            assertTrue(StudentValidator.isValidStudent(student));
+        } else {
+            try {
+                StudentValidator.isValidStudent(student);
+                assertFalse("Expected an exception for invalid student, but none was thrown.", true);
+            } catch (IllegalArgumentException e) {
+                assertTrue("Exception thrown as expected for invalid student.", true);
+            }
+        }
     }
 
-    private static Student createValidStudent() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(1, "John", "Doe", "Ivanovich", dob, address, "+1234567890", Faculty.FPMI, 2, 1);
-    }
-
-    private static Student createInvalidStudentWithEmptyName() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(2, "", "Doe", "Ivanovich", dob, address, "+1234567890", Faculty.FPMI, 2, 1);
-    }
-
-    private static Student createInvalidStudentWithEmptyLastName() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(3, "Alice", "", "Petrovich", dob, address, "+1234567890", Faculty.FPMI, 2, 1);
-    }
-
-    private static Student createInvalidStudentWithEmptyPatronymic() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(4, "Bob", "Johnson", "", dob, address, "+1234567890", Faculty.FPMI, 2, 1);
-    }
-
-    private static Student createInvalidStudentWithFutureDOB() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.add(Calendar.YEAR, 5);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(5, "Charlie", "Brown", "Sidorovich", dob, address, "+1234567890", Faculty.FPMI, 2, 1);
-    }
-
-    private static Student createInvalidStudentWithFutureDOBDifferentYear() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2026, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(6, "Diana", "Green", "Nikolayevich", dob, address, "+1234567890", Faculty.FPMI, 2, 1);
-    }
-
-    private static Student createInvalidStudentWithInvalidPhone() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(7, "Eve", "White", "Dmitrievich", dob, address, "123456789", Faculty.FPMI, 2, 1);
-    }
-
-    private static Student createInvalidStudentWithInvalidCourseNumber() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(8, "Frank", "Black", "Petrovich", dob, address, "+1234567890", Faculty.FPMI, 0, 1);
-    }
-
-    private static Student createInvalidStudentWithInvalidGroupNumber() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(9, "Grace", "Blue", "Sidorovich", dob, address, "+1234567890", Faculty.FPMI, 2, 11);
-    }
-
-    private static Student createInvalidStudentWithSpecialCharactersInName() {
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(2000, Calendar.JANUARY, 1);
-        Date dob = calendar.getTime();
-        Address address = new Address("Street 1", "City", "Country");
-        return new Student(10, "H@rry", "Potter", "Ivanovich", dob, address, "+1234567890", Faculty.FPMI, 2, 1);
+    private static Student createStudent(String firstName, String lastName, String patronymic, int year, int month, int day, String phone, Faculty faculty, int course, int group) {
+        LocalDate dob = LocalDate.of(year, month, day);
+        return new Student(1, firstName, lastName, patronymic, dob, new Address("Street 1", "City", "Country"), phone, faculty, course, group);
     }
 }

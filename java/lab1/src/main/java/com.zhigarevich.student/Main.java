@@ -1,47 +1,52 @@
 package com.zhigarevich.student;
 
-import com.zhigarevich.student.controller.StudentController;
 import com.zhigarevich.student.entity.Faculty;
 import com.zhigarevich.student.entity.Student;
 import com.zhigarevich.student.factory.StudentFactory;
 import com.zhigarevich.student.service.StudentService;
 import com.zhigarevich.student.service.StudentServiceImpl;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.List;
 
 public class Main {
+    private static final Logger logger = LogManager.getLogger(Main.class);
+
     public static void main(String[] args) {
-        List<Student> studentList = StudentFactory.createRandomStudents(20);
-        StudentService studentService = new StudentServiceImpl();
+        try {
+            List<Student> studentList = StudentFactory.createRandomStudents(20);
+            StudentService studentService = new StudentServiceImpl();
 
-        StudentController controller = new StudentController(studentService);
+            logger.info("All Students:");
+            for (Student student : studentList) {
+                logger.info(student);
+            }
+            logger.info("");
 
-        System.out.println("All Students:");
-        for (Student student : studentList) {
-            System.out.println(student);
-        }
-        System.out.println();
+            Faculty facultyToSearch = Faculty.FPMI;
+            List<Student> studentsInFPMI = studentService.findStudentsByFaculty(studentList, facultyToSearch);
+            logger.info("Students in " + facultyToSearch + ":");
+            for (Student student : studentsInFPMI) {
+                logger.info(student);
+            }
+            logger.info("");
 
-        Faculty facultyToSearch = Faculty.FPMI;
-        List<Student> studentsInFPMI = controller.getStudentsByFaculty(studentList, facultyToSearch);
-        System.out.println("Students in " + facultyToSearch + ":");
-        for (Student student : studentsInFPMI) {
-            System.out.println(student);
-        }
-        System.out.println();
+            int courseToSearch = 2;
+            List<Student> fmoCourse2Students = studentService.findStudentsByFacultyAndCourse(studentList, Faculty.FMO, courseToSearch);
+            logger.info("FMO Course " + courseToSearch + " Students:");
+            for (Student student : fmoCourse2Students) {
+                logger.info(student);
+            }
+            logger.info("");
 
-        int courseToSearch = 2;
-        List<Student> fmoCourse2Students = controller.getStudentsByFacultyAndCourse(studentList, Faculty.FMO, courseToSearch);
-        System.out.println("FMO Course " + courseToSearch + " Students:");
-        for (Student student : fmoCourse2Students) {
-            System.out.println(student);
-        }
-        System.out.println();
-
-        List<Student> studentsBornAfter2000 = controller.getStudentsBornAfter(studentList, 2000);
-        System.out.println("Students born after 2000:");
-        for (Student student : studentsBornAfter2000) {
-            System.out.println(student);
+            List<Student> studentsBornAfter2000 = studentService.findStudentsBornAfter(studentList, 2000);
+            logger.info("Students born after 2000:");
+            for (Student student : studentsBornAfter2000) {
+                logger.info(student);
+            }
+        } catch (IllegalArgumentException e) {
+            logger.error(e.getMessage());
         }
     }
 }

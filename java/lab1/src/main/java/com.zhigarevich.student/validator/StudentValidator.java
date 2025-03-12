@@ -1,6 +1,7 @@
 package com.zhigarevich.student.validator;
 
-import java.util.Date;
+import java.time.LocalDate;
+import java.time.ZoneId;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -11,75 +12,66 @@ import org.apache.logging.log4j.Logger;
 
 public class StudentValidator {
     private static final Logger logger = LogManager.getLogger(StudentValidator.class);
+    private static final String PHONE_NUMBER_REGEX = "\\+\\d{1,3}\\d{9}";
 
     public static boolean isValidStudent(Student student) {
-        boolean isValid = isValidName(student.getFirstName()) &&
-                isValidName(student.getLastName()) &&
-                isValidPatronymic(student.getPatronymic()) &&
-                isValidDateOfBirth(student.getDateOfBirth()) &&
-                isValidPhoneNumber(student.getPhoneNumber()) &&
-                isValidFaculty(student.getFaculty()) &&
-                isValidCourse(student.getCourse()) &&
-                isValidGroup(student.getGroup());
+        validateName(student.getFirstName(), "First Name");
+        validateName(student.getLastName(), "Last Name");
+        validatePatronymic(student.getPatronymic());
+        validateDateOfBirth(student.getDateOfBirth());
+        validatePhoneNumber(student.getPhoneNumber());
+        validateFaculty(student.getFaculty());
+        validateCourse(student.getCourse());
+        validateGroup(student.getGroup());
 
-        if (isValid) {
-            logger.info("Student is valid: " + student);
-        } else {
-            logger.warn("Student is invalid: " + student);
+        return true;
+    }
+
+    private static void validateName(String name, String fieldName) {
+        if (name == null || name.trim().isEmpty() || !name.matches("[A-Za-z]+")) {
+            logger.error(fieldName + " is invalid: " + name);
+            throw new IllegalArgumentException(fieldName + " is invalid: " + name);
         }
-        return isValid;
     }
 
-    private static boolean isValidName(String name) {
-        boolean valid = name != null && !name.trim().isEmpty() && name.matches("[A-Za-z]+");
-        logValidationResult("Name", name, valid);
-        return valid;
+    private static void validatePatronymic(String patronymic) {
+        validateName(patronymic, "Patronymic");
     }
 
-    private static boolean isValidPatronymic(String patronymic) {
-        boolean valid = patronymic != null && !patronymic.trim().isEmpty() && patronymic.matches("[A-Za-z]+");
-        logValidationResult("Patronymic", patronymic, valid);
-        return valid;
+    private static void validateDateOfBirth(LocalDate dateOfBirth) {
+        if (dateOfBirth == null || dateOfBirth.isAfter(LocalDate.now())) {
+            logger.error("Date of Birth is invalid: " + (dateOfBirth != null ? dateOfBirth.toString() : "null"));
+            throw new IllegalArgumentException("Date of Birth is invalid: " + (dateOfBirth != null ? dateOfBirth.toString() : "null"));
+        }
     }
 
-    private static boolean isValidDateOfBirth(Date dateOfBirth) {
-        boolean valid = dateOfBirth != null && dateOfBirth.before(new Date());
-        logValidationResult("Date of Birth", dateOfBirth != null ? dateOfBirth.toString() : "null", valid);
-        return valid;
-    }
-
-    private static boolean isValidPhoneNumber(String phoneNumber) {
-        String regex = "\\+\\d{1,3}\\d{9}";
-        Pattern pattern = Pattern.compile(regex);
+    private static void validatePhoneNumber(String phoneNumber) {
+        Pattern pattern = Pattern.compile(PHONE_NUMBER_REGEX);
         Matcher matcher = pattern.matcher(phoneNumber);
-        boolean valid = matcher.matches();
-        logValidationResult("Phone Number", phoneNumber, valid);
-        return valid;
+        if (!matcher.matches()) {
+            logger.error("Phone Number is invalid: " + phoneNumber);
+            throw new IllegalArgumentException("Phone Number is invalid: " + phoneNumber);
+        }
     }
 
-    private static boolean isValidFaculty(Faculty faculty) {
-        boolean valid = faculty != null;
-        logValidationResult("Faculty", faculty != null ? faculty.toString() : "null", valid);
-        return valid;
+    private static void validateFaculty(Faculty faculty) {
+        if (faculty == null) {
+            logger.error("Faculty is invalid: null");
+            throw new IllegalArgumentException("Faculty is invalid: null");
+        }
     }
 
-    private static boolean isValidCourse(int course) {
-        boolean valid = course >= 1 && course <= 5;
-        logValidationResult("Course", String.valueOf(course), valid);
-        return valid;
+    private static void validateCourse(int course) {
+        if (course < 1 || course > 5) {
+            logger.error("Course is invalid: " + course);
+            throw new IllegalArgumentException("Course is invalid: " + course);
+        }
     }
 
-    private static boolean isValidGroup(int group) {
-        boolean valid = group >= 1 && group <= 10;
-        logValidationResult("Group", String.valueOf(group), valid);
-        return valid;
-    }
-
-    private static void logValidationResult(String fieldName, String value, boolean isValid) {
-        if (isValid) {
-            logger.info(fieldName + " is valid: " + value);
-        } else {
-            logger.error(fieldName + " is invalid: " + value);
+    private static void validateGroup(int group) {
+        if (group < 1 || group > 10) {
+            logger.error("Group is invalid: " + group);
+            throw new IllegalArgumentException("Group is invalid: " + group);
         }
     }
 }
