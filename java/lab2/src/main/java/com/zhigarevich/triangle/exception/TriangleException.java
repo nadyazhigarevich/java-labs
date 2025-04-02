@@ -1,6 +1,6 @@
 package com.zhigarevich.triangle.exception;
 
-public class TriangleException extends Exception{
+public class TriangleException extends Exception {
     public TriangleException() {
     }
 

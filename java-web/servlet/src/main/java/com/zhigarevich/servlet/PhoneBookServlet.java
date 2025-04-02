@@ -3,6 +3,7 @@ package com.zhigarevich.servlet;
 import com.zhigarevich.dao.PhoneBookDAO;
 import com.zhigarevich.db.ConnectionPool;
 import com.zhigarevich.model.PhoneBookEntry;
+import com.zhigarevich.validator.Validator;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.*;
 import jakarta.servlet.annotation.*;
@@ -10,6 +11,8 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 import java.io.IOException;
+import java.net.URLEncoder;
+import java.nio.charset.StandardCharsets;
 import java.sql.SQLException;
 import java.util.List;
 
@@ -25,57 +28,62 @@ public class PhoneBookServlet extends HttpServlet {
 
     @Override
     protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-        HttpSession session = req.getSession(false);
-        if (session == null || session.getAttribute("user") == null) {
-            logger.warn("User not logged in, redirecting to login page.");
-            resp.sendRedirect("login");
-            return;
-        }
+        Integer userId = (Integer) req.getSession().getAttribute("userId");
 
-        Integer userId = (Integer) session.getAttribute("userId");
         if (userId == null) {
-            resp.sendError(HttpServletResponse.SC_BAD_REQUEST, "User ID is required");
+            resp.sendRedirect(req.getContextPath() + "/login?error=" +
+                    URLEncoder.encode("Требуется авторизация", StandardCharsets.UTF_8));
             return;
         }
 
-        List<PhoneBookEntry> phoneBooks;
         try {
-            phoneBooks = this.phoneBookDAO.findAllEntries(userId);
+            List<PhoneBookEntry> phoneBooks = phoneBookDAO.findAllEntries(userId);
+            req.setAttribute("entries", phoneBooks);
+            req.getRequestDispatcher("/pages/entries/entries.jsp").forward(req, resp);
         } catch (SQLException e) {
             logger.error("Error fetching entries: {}", e.getMessage());
-            resp.sendError(HttpServletResponse.SC_INTERNAL_SERVER_ERROR, "Failed to fetch entries");
-            return;
+            resp.sendRedirect(req.getContextPath() + "/error?code=500");
         }
-        req.setAttribute("entries", phoneBooks);
-        req.getRequestDispatcher("pages/entries/entries.jsp").forward(req, resp);
     }
 
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
-        String contactName = request.getParameter("contactName");
-        String phoneNumber = request.getParameter("phoneNumber");
+        String contactName = request.getParameter("contactName").trim();
+        String phoneNumber = request.getParameter("phoneNumber").trim();
         Integer userId = (Integer) request.getSession().getAttribute("userId");
 
         if (userId == null) {
-            logger.warn("User ID is missing in session.");
-            response.sendError(HttpServletResponse.SC_BAD_REQUEST, "User ID is required");
+            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
+            response.getWriter().write("{\"error\": \"Требуется авторизация\"}");
             return;
         }
 
-        PhoneBookEntry entry = new PhoneBookEntry(userId, contactName, phoneNumber);
         try {
+            // Валидация данных
+            if (!Validator.validateContactName(contactName)) {
+                throw new IllegalArgumentException("Имя контакта должно быть от 2 до 50 символов");
+            }
+
+            if (!Validator.validatePhoneNumber(phoneNumber)) {
+                throw new IllegalArgumentException("Некорректный формат номера телефона");
+            }
+
+            PhoneBookEntry entry = new PhoneBookEntry(userId, contactName, phoneNumber);
             phoneBookDAO.addEntry(entry, userId);
             logger.info("Added entry: {} - {}", contactName, phoneNumber);
 
-            // Ответ в формате JSON для автоматического обновления списка
             response.setContentType("application/json");
             response.getWriter().write("{\"success\": true}");
+        } catch (IllegalArgumentException e) {
+            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
+            response.setContentType("application/json");
+            response.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
         } catch (SQLException e) {
             String message = DATABASE_ERROR_TEMPLATE.formatted(e.getMessage());
             logger.error(message);
             response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
             response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"" + message + "\"}");
+            response.getWriter().write("{\"error\": \"Ошибка базы данных. Попробуйте позже.\"}");
         }
     }
 

@@ -1,50 +1,28 @@
 <%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
     <title>Phone Book</title>
-    <link rel="stylesheet" type="text/css" href="resources/css/styles.css">
-    <script src="resources/js/scripts.js"></script>
-    <script>
-        function refreshEntries() {
-            const userId = ${sessionScope.userId};
-            fetch(`./getEntries?userId=${userId}`)
-                .then(response => response.json())
-                .then(data => {
-                    const entriesList = document.getElementById('entriesList');
-                    entriesList.innerHTML = ''; // Очищаем текущий список
-                    if (data.length === 0) {
-                        entriesList.innerHTML = '<li>No contacts available.</li>';
-                    } else {
-                        data.forEach(entry => {
-                            const li = document.createElement('li');
-                            li.textContent = `${entry.contactName}: ${entry.phoneNumber}`;
-                            entriesList.appendChild(li);
-                        });
-                    }
-                })
-                .catch(error => console.error('Error fetching entries:', error));
-        }
-
-        // Вызываем refreshEntries при загрузке страницы
-        window.onload = refreshEntries;
-
-        // Вызываем refreshEntries после успешного добавления контакта
-        function onContactAdded() {
-            refreshEntries();
-        }
-    </script>
+    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css">
+    <script src="${pageContext.request.contextPath}/resources/js/validation.js"></script>
 </head>
 <body>
 <h1>All Entries:</h1>
 
-<!-- Форма для добавления контакта -->
-<form action="${pageContext.request.contextPath}/addEntry" method="post" onsubmit="onContactAdded()">
-    <input type="hidden" name="userId" value="${sessionScope.userId}"> <!-- Скрытое поле для userId -->
+<% if (request.getParameter("error") != null) { %>
+<p style="color:red;"><%= request.getParameter("error") %></p>
+<% } %>
+
+<form action="${pageContext.request.contextPath}/addEntry" method="post" onsubmit="return validateContactForm()">
+    <input type="hidden" name="userId" value="${sessionScope.userId}">
     <label for="contactName">Contact Name:</label>
     <input type="text" id="contactName" name="contactName" required>
+    <small>От 2 до 50 символов</small>
 
     <label for="phoneNumber">Phone Number:</label>
     <input type="text" id="phoneNumber" name="phoneNumber" required>
+    <small>Формат: +375291234567 или 80441234567</small>
 
     <input type="submit" value="Add Contact">
 </form>
@@ -60,6 +38,6 @@
     </c:if>
 </ul>
 
-<a href="logout">Logout</a>
+<a href="${pageContext.request.contextPath}/logout">Logout</a>
 </body>
 </html>

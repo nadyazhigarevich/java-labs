@@ -7,5 +7,5 @@ public enum Faculty {
     FPH,
     FMT,
     FIS,
-    FPO,
+    FPO
 }

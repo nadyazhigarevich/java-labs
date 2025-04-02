@@ -2,6 +2,7 @@ package com.zhigarevich.dao;
 
 import com.zhigarevich.model.PhoneBookEntry;
 import com.zhigarevich.db.ConnectionPool;
+import com.zhigarevich.validator.Validator;
 
 import java.sql.*;
 import java.util.ArrayList;
@@ -10,7 +11,15 @@ import java.util.List;
 public class PhoneBookDAO {
 
     // Метод для добавления записи
-    public void addEntry(PhoneBookEntry entry, int userId) throws SQLException {
+    public void addEntry(PhoneBookEntry entry, int userId) throws SQLException, IllegalArgumentException {
+        if (!Validator.validateContactName(entry.getContactName())) {
+            throw new IllegalArgumentException("Contact name must be between 2 and 50 characters");
+        }
+
+        if (!Validator.validatePhoneNumber(entry.getPhoneNumber())) {
+            throw new IllegalArgumentException("Invalid phone number format");
+        }
+
         String sql = "INSERT INTO phone_book (user_id, contact_name, phone_number) VALUES (?, ?, ?)";
         try (Connection connection = ConnectionPool.get();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
@@ -22,8 +31,6 @@ public class PhoneBookDAO {
             if (rowsAffected == 0) {
                 throw new SQLException("Inserting entry failed, no rows affected.");
             }
-        } catch (SQLException e) {
-            throw e;
         }
     }
 

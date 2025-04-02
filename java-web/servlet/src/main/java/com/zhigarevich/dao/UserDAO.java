@@ -2,66 +2,112 @@ package com.zhigarevich.dao;
 
 import com.zhigarevich.model.User;
 import com.zhigarevich.db.ConnectionPool;
+import com.zhigarevich.validator.Validator;
 import org.mindrot.jbcrypt.BCrypt;
 
-import java.sql.Connection;
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
-import java.sql.SQLException;
+import java.sql.*;
+import java.util.UUID;
 
 public class UserDAO {
 
-    // Метод для добавления пользователя и возврата его ID
-    public int addUser(User user) throws SQLException {
+    private static final String INSERT_USER_SQL = "INSERT INTO users (username, password, email, verification_token, verified) VALUES (?, ?, ?, ?, ?)";
+    private static final String FIND_BY_USERNAME_SQL = "SELECT * FROM users WHERE username = ?";
+    private static final String FIND_BY_EMAIL_SQL = "SELECT * FROM users WHERE email = ?";
+    private static final String FIND_BY_TOKEN_SQL = "SELECT * FROM users WHERE verification_token = ?";
+    private static final String UPDATE_VERIFIED_SQL = "UPDATE users SET verified = true, verification_token = NULL WHERE verification_token = ?";
+
+    public int addUser(User user) throws SQLException, IllegalArgumentException {
+        if (!Validator.validateUsername(user.getUsername())) {
+            throw new IllegalArgumentException("Invalid username format");
+        }
+        if (!Validator.validatePassword(user.getPassword())) {
+            throw new IllegalArgumentException("Password must be at least 6 characters long");
+        }
+        if (!Validator.validateEmail(user.getEmail())) {
+            throw new IllegalArgumentException("Invalid email format");
+        }
+
         String hashedPassword = BCrypt.hashpw(user.getPassword(), BCrypt.gensalt());
-        String sql = "INSERT INTO users (username, password) VALUES (?, ?)";
+        String verificationToken = UUID.randomUUID().toString();
 
         try (Connection connection = ConnectionPool.get();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql, PreparedStatement.RETURN_GENERATED_KEYS)) {
-            preparedStatement.setString(1, user.getUsername());
-            preparedStatement.setString(2, hashedPassword);
-            preparedStatement.executeUpdate();
+             PreparedStatement ps = connection.prepareStatement(INSERT_USER_SQL, PreparedStatement.RETURN_GENERATED_KEYS)) {
+            ps.setString(1, user.getUsername());
+            ps.setString(2, hashedPassword);
+            ps.setString(3, user.getEmail());
+            ps.setString(4, verificationToken);
+            ps.setBoolean(5, false);
 
-            // Получение сгенерированного ID
-            try (ResultSet generatedKeys = preparedStatement.getGeneratedKeys()) {
-                if (generatedKeys.next()) {
-                    return generatedKeys.getInt(1); // Возвращаем ID
-                } else {
-                    throw new SQLException("Creating user failed, no ID obtained.");
+            ps.executeUpdate();
+
+            try (ResultSet rs = ps.getGeneratedKeys()) {
+                if (rs.next()) {
+                    int userId = rs.getInt(1);
+                    // Здесь должна быть отправка email с verificationToken
+                    return userId;
                 }
+                throw new SQLException("Creating user failed, no ID obtained.");
             }
+        }
+    }
+
+    public boolean verifyUser(String token) throws SQLException {
+        try (Connection connection = ConnectionPool.get();
+             PreparedStatement ps = connection.prepareStatement(UPDATE_VERIFIED_SQL)) {
+            ps.setString(1, token);
+            return ps.executeUpdate() > 0;
         }
     }
 
     // Метод для получения пользователя по ID
     public User findUserById(int userId) throws SQLException {
-        String sql = "SELECT * FROM users WHERE id = ?";
+        String sql = "SELECT id, username, password, email, verified FROM users WHERE id = ?";
+
         try (Connection connection = ConnectionPool.get();
              PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
+
             preparedStatement.setInt(1, userId);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                String username = resultSet.getString("username");
-                String password = resultSet.getString("password");
-                return new User(userId, username, password);
+
+            try (ResultSet resultSet = preparedStatement.executeQuery()) {
+                if (resultSet.next()) {
+                    return new User(
+                            resultSet.getInt("id"),
+                            resultSet.getString("username"),
+                            resultSet.getString("password"),
+                            resultSet.getString("email"),
+                            resultSet.getBoolean("verified")
+                    );
+                }
+                return null; // Пользователь не найден
             }
+        } catch (SQLException e) {
+            // Логирование ошибки может быть добавлено здесь
+            throw new SQLException("Ошибка при поиске пользователя по ID: " + userId, e);
         }
-        return null; // Возвращаем null, если пользователь не найден
     }
 
-    // Метод для получения пользователя по имени
     public User findUsername(String username) throws SQLException {
-        String sql = "SELECT * FROM users WHERE username = ?";
+        final String sql = "SELECT id, username, password, email, verified FROM users WHERE username = ?";
+
         try (Connection connection = ConnectionPool.get();
-             PreparedStatement preparedStatement = connection.prepareStatement(sql)) {
-            preparedStatement.setString(1, username);
-            ResultSet resultSet = preparedStatement.executeQuery();
-            if (resultSet.next()) {
-                int id = resultSet.getInt("id");
-                String password = resultSet.getString("password");
-                return new User(id, username, password);
+             PreparedStatement statement = connection.prepareStatement(sql)) {
+
+            statement.setString(1, username);
+
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    return new User(
+                            rs.getInt("id"),
+                            rs.getString("username"),
+                            rs.getString("password"),
+                            rs.getString("email"),
+                            rs.getBoolean("verified")
+                    );
+                }
+                return null;
             }
+        } catch (SQLException ex) {
+            throw new SQLException("Failed to find user by username: " + username, ex);
         }
-        return null; // Возвращаем null, если пользователь не найден
     }
 }

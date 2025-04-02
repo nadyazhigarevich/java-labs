@@ -2,13 +2,14 @@
 <html>
 <head>
     <title>Вход</title>
+    <script src="${pageContext.request.contextPath}/resources/js/validation.js"></script>
 </head>
 <body>
 <h1>Вход</h1>
 <% if (request.getParameter("error") != null) { %>
 <p style="color:red;"><%= request.getParameter("error") %></p>
 <% } %>
-<form action="${pageContext.request.contextPath}/login" method="post">
+<form action="${pageContext.request.contextPath}/login" method="post" onsubmit="return validateLoginForm()">
     <label for="username">Имя пользователя:</label>
     <input type="text" id="username" name="username" required>
     <br>

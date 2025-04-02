@@ -4,7 +4,7 @@ import com.zhigarevich.student.entity.Faculty;
 import com.zhigarevich.student.entity.Student;
 import com.zhigarevich.student.factory.StudentFactory;
 import com.zhigarevich.student.service.StudentService;
-import com.zhigarevich.student.service.StudentServiceImpl;
+import com.zhigarevich.student.service.impl.StudentServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

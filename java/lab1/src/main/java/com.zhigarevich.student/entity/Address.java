@@ -1,5 +1,7 @@
 package com.zhigarevich.student.entity;
 
+import java.util.Objects;
+
 public class Address {
     private String country;
     private String city;
@@ -12,7 +14,6 @@ public class Address {
     }
 
     public Address() {
-
     }
 
     public String getCountry() {
@@ -41,8 +42,9 @@ public class Address {
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder("Address{");
-        sb.append("country='").append(country).append('\'')
+        StringBuilder sb = new StringBuilder();
+        sb.append("Address{")
+                .append("country='").append(country).append('\'')
                 .append(", city='").append(city).append('\'')
                 .append(", street='").append(street).append('\'')
                 .append('}');
@@ -52,12 +54,12 @@ public class Address {
     @Override
     public boolean equals(Object obj) {
         if (this == obj) return true;
-        if (obj == null || !(obj instanceof Address)) return false;
+        if (obj == null || getClass() != obj.getClass()) return false;
 
         Address address = (Address) obj;
-        return (country == null ? address.country == null : country.equals(address.country)) &&
-                (city == null ? address.city == null : city.equals(address.city)) &&
-                (street == null ? address.street == null : street.equals(address.street));
+        return Objects.equals(country, address.country) &&
+                Objects.equals(city, address.city) &&
+                Objects.equals(street, address.street);
     }
 
     @Override

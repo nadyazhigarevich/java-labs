@@ -48,9 +48,8 @@
         <servlet-name>phoneBookServlet</servlet-name>
         <url-pattern>/addEntry</url-pattern>
     </servlet-mapping>
-
     <welcome-file-list>
-        <welcome-file>main</welcome-file> <!-- Укажите главный сервлет -->
+        <welcome-file>login</welcome-file>
     </welcome-file-list>
 
 </web-app>

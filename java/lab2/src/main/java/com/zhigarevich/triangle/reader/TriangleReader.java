@@ -1,27 +1,23 @@
 package com.zhigarevich.triangle.reader;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.util.ArrayList;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.Stream;
 
 public class TriangleReader {
-    private String filePath;
+    private final Path filePath;
 
     public TriangleReader(String filePath) {
-        this.filePath = filePath;
+        this.filePath = Paths.get(filePath);
     }
 
     public List<String> readTriangleData() throws IOException {
-        List<String> triangleData = new ArrayList<>();
-        try (BufferedReader br = new BufferedReader(new FileReader(filePath))) {
-            String line;
-            while ((line = br.readLine()) != null) {
-                triangleData.add(line);
-            }
+        try (Stream<String> lines = Files.lines(filePath)) {
+            return lines.collect(Collectors.toList());
         }
-        return triangleData;
     }
 }

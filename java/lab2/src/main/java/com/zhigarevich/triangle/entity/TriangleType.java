@@ -1,11 +1,13 @@
 package com.zhigarevich.triangle.entity;
 
 public enum TriangleType {
-    ISOSCELES("isosceles"),
-    EQUILATERAL("equilateral"),
-    RECTANGULAR("rectangular"),
-    ARBITRARY("arbitrary");
+    ISOSCELES,
+    EQUILATERAL,
+    RECTANGULAR,
+    ARBITRARY;
 
-    TriangleType(String type) {
+    @Override
+    public String toString() {
+        return this.name().toLowerCase();
     }
 }

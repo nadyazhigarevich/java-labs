@@ -112,18 +112,20 @@ public class Student {
 
     @Override
     public String toString() {
-        return "Student{" +
-                "id=" + id +
-                ", lastName='" + lastName + '\'' +
-                ", firstName='" + firstName + '\'' +
-                ", patronymic='" + patronymic + '\'' +
-                ", dateOfBirth=" + dateOfBirth +
-                ", address=" + address +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                ", faculty=" + faculty +
-                ", course=" + course +
-                ", group=" + group +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("Student{")
+                .append("id=").append(id)
+                .append(", lastName='").append(lastName).append('\'')
+                .append(", firstName='").append(firstName).append('\'')
+                .append(", patronymic='").append(patronymic).append('\'')
+                .append(", dateOfBirth=").append(dateOfBirth)
+                .append(", address=").append(address)
+                .append(", phoneNumber='").append(phoneNumber).append('\'')
+                .append(", faculty=").append(faculty)
+                .append(", course=").append(course)
+                .append(", group=").append(group)
+                .append('}');
+        return sb.toString();
     }
 
     @Override

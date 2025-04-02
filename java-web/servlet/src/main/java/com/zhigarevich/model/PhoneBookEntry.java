@@ -1,7 +1,5 @@
 package com.zhigarevich.model;
 
-import java.util.Objects;
-
 public class PhoneBookEntry {
     private int userId; // Идентификатор пользователя
     private String contactName; // Имя контакта
@@ -34,23 +32,29 @@ public class PhoneBookEntry {
         if (!(o instanceof PhoneBookEntry)) return false; // Проверяем тип
         PhoneBookEntry that = (PhoneBookEntry) o; // Приводим к нужному типу
         return userId == that.userId &&
-                Objects.equals(contactName, that.contactName) &&
-                Objects.equals(phoneNumber, that.phoneNumber);
+                (contactName == null ? that.contactName == null : contactName.equals(that.contactName)) &&
+                (phoneNumber == null ? that.phoneNumber == null : phoneNumber.equals(that.phoneNumber));
     }
 
     // Переопределение метода hashCode для корректного использования в коллекциях
     @Override
     public int hashCode() {
-        return Objects.hash(userId, contactName, phoneNumber);
+        int result = 17; // Начальное значение для генерации хеш-кода
+        result = 31 * result + userId; // Умножаем на 31 и добавляем userId
+        result = 31 * result + (contactName != null ? contactName.hashCode() : 0); // Обрабатываем contactName
+        result = 31 * result + (phoneNumber != null ? phoneNumber.hashCode() : 0); // Обрабатываем phoneNumber
+        return result;
     }
 
     // Переопределение метода toString для удобного вывода информации об объекте
     @Override
     public String toString() {
-        return "PhoneBookEntry{" +
-                "userId=" + userId +
-                ", contactName='" + contactName + '\'' +
-                ", phoneNumber='" + phoneNumber + '\'' +
-                '}';
+        StringBuilder sb = new StringBuilder();
+        sb.append("PhoneBookEntry{");
+        sb.append("userId=").append(userId);
+        sb.append(", contactName='").append(contactName).append('\'');
+        sb.append(", phoneNumber='").append(phoneNumber).append('\'');
+        sb.append('}');
+        return sb.toString();
     }
 }

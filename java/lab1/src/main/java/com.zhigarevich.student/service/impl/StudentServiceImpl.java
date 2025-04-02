@@ -1,7 +1,8 @@
-package com.zhigarevich.student.service;
+package com.zhigarevich.student.service.impl;
 
 import com.zhigarevich.student.entity.Faculty;
 import com.zhigarevich.student.entity.Student;
+import com.zhigarevich.student.service.StudentService;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 

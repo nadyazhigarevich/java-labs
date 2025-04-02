@@ -2,12 +2,15 @@ package com.zhigarevich.triangle.factory;
 
 import com.zhigarevich.triangle.entity.Triangle;
 import com.zhigarevich.triangle.validator.TriangleValidator;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
 public class TriangleFactory {
+    private static final Logger logger = LogManager.getLogger(TriangleFactory.class);
     private final TriangleValidator validator;
     private final Random random = new Random();
     private final List<Triangle> createdTriangles = new ArrayList<>();
@@ -22,11 +25,10 @@ public class TriangleFactory {
         if (validator.isValid(triangle)) {
             createdTriangles.add(triangle);
             idCounter++;
+            logger.info("Created triangle with ID {} and sides ({}, {}, {})", triangle.getId(), a, b, c);
             return triangle;
-        } else {
-            System.err.println("Invalid triangle sides: (" + a + ", " + b + ", " + c + "). ID remains the same.");
-            return null;
         }
+        return null;
     }
 
     public Triangle createRandomTriangle() {
@@ -39,6 +41,7 @@ public class TriangleFactory {
             if (validator.isValid(triangle)) {
                 createdTriangles.add(triangle);
                 idCounter++;
+                logger.info("Created random triangle with ID {} and sides ({}, {}, {})", triangle.getId(), a, b, c);
                 return triangle;
             }
         }
@@ -46,9 +49,11 @@ public class TriangleFactory {
 
     public List<Triangle> createRandomTriangles(int count) {
         List<Triangle> triangles = new ArrayList<>();
+        logger.info("Creating {} random triangles", count);
         for (int i = 0; i < count; i++) {
             triangles.add(createRandomTriangle());
         }
+        logger.info("Successfully created {} random triangles", count);
         return triangles;
     }
 }
