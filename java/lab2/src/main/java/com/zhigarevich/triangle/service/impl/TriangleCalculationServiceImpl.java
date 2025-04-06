@@ -1,6 +1,7 @@
 package com.zhigarevich.triangle.service.impl;
 
 import com.zhigarevich.triangle.entity.Triangle;
+import com.zhigarevich.triangle.exception.TriangleException;
 import com.zhigarevich.triangle.service.TriangleCalculationService;
 import com.zhigarevich.triangle.validator.TriangleValidator;
 import org.apache.logging.log4j.LogManager;
@@ -15,10 +16,10 @@ public class TriangleCalculationServiceImpl implements TriangleCalculationServic
     }
 
     @Override
-    public double calculateArea(Triangle triangle) {
+    public double calculateArea(Triangle triangle) throws TriangleException {
         if (!validator.isValid(triangle)) {
             logger.error("Attempt to calculate area for invalid triangle with ID: {}", triangle.getId());
-            return Double.NaN;
+            throw new TriangleException("Invalid triangle");
         }
 
         double semiPerimeter = calculatePerimeter(triangle) / 2;
@@ -31,10 +32,10 @@ public class TriangleCalculationServiceImpl implements TriangleCalculationServic
     }
 
     @Override
-    public double calculatePerimeter(Triangle triangle) {
+    public double calculatePerimeter(Triangle triangle) throws TriangleException {
         if (!validator.isValid(triangle)) {
             logger.error("Attempt to calculate perimeter for invalid triangle with ID: {}", triangle.getId());
-            return Double.NaN;
+            throw new TriangleException("Invalid triangle");
         }
 
         double perimeter = triangle.getA() + triangle.getB() + triangle.getC();

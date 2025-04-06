@@ -3,7 +3,6 @@ package com.zhigarevich.triangle.writer.impl;
 import com.zhigarevich.triangle.entity.Triangle;
 import com.zhigarevich.triangle.entity.TriangleType;
 import com.zhigarevich.triangle.exception.TriangleException;
-import com.zhigarevich.triangle.service.TriangleCalculationService;
 import com.zhigarevich.triangle.writer.ResultWriter;
 import org.json.JSONArray;
 import org.json.JSONObject;
@@ -14,12 +13,7 @@ import java.nio.file.Paths;
 import java.util.Map;
 
 public class JsonResultWriter implements ResultWriter {
-    private static final String OUTPUT_FILE = "src/main/resources/triangle_results.json";
-    private final TriangleCalculationService calculationService;
-
-    public JsonResultWriter(TriangleCalculationService calculationService) {
-        this.calculationService = calculationService;
-    }
+    private static final String OUTPUT_FILE = "data/triangle_results.json";
 
     @Override
     public void writeResults(Map<TriangleType, Integer> counts,
@@ -57,7 +51,6 @@ public class JsonResultWriter implements ResultWriter {
             triangleJson.put("sideA", triangle.getA());
             triangleJson.put("sideB", triangle.getB());
             triangleJson.put("sideC", triangle.getC());
-            triangleJson.put("area", calculationService.calculateArea(triangle));
             parent.put(key, triangleJson);
         }
     }
