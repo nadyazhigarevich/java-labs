@@ -1,43 +1,77 @@
-<%@ page contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
+<%@ page contentType="text/html; charset=utf-8" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <html>
 <head>
     <title>Phone Book</title>
-    <link rel="stylesheet" type="text/css" href="${pageContext.request.contextPath}/resources/css/styles.css">
-    <script src="${pageContext.request.contextPath}/resources/js/validation.js"></script>
+    <script>
+        document.getElementById('contactForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const formData = new FormData(e.target);
+
+            try {
+                const response = await fetch(e.target.action, {
+                    method: 'POST',
+                    body: formData,
+                    credentials: 'include'
+                });
+
+                if (!response.ok) {
+                    const error = await response.json();
+                    throw new Error(error.error || "Ошибка сервера");
+                }
+
+                const data = await response.json();
+                const list = document.getElementById('entriesList');
+
+                // Удаляем заглушку "No contacts", если есть
+                if (list.firstElementChild?.textContent.includes("No contacts")) {
+                    list.removeChild(list.firstElementChild);
+                }
+
+                // Добавляем новый контакт
+                const newItem = document.createElement('li');
+                newItem.textContent = `${data.contactName}: ${data.phoneNumber}`;
+                list.prepend(newItem);
+                e.target.reset();
+
+            } catch (error) {
+                alert(error.message || "Произошла неизвестная ошибка");
+                console.error("Ошибка:", error);
+            }
+        });
+    </script>
 </head>
 <body>
 <h1>All Entries:</h1>
 
-<% if (request.getParameter("error") != null) { %>
-<p style="color:red;"><%= request.getParameter("error") %></p>
-<% } %>
-
-<form action="${pageContext.request.contextPath}/addEntry" method="post" onsubmit="return validateContactForm()">
-    <input type="hidden" name="userId" value="${sessionScope.userId}">
-    <label for="contactName">Contact Name:</label>
-    <input type="text" id="contactName" name="contactName" required>
+<form id="contactForm">
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+    <label>
+        Contact Name:
+        <input type="text" name="contactName" required>
+    </label>
     <small>От 2 до 50 символов</small>
 
-    <label for="phoneNumber">Phone Number:</label>
-    <input type="text" id="phoneNumber" name="phoneNumber" required>
+    <label>
+        Phone Number:
+        <input type="text" name="phoneNumber" required>
+    </label>
     <small>Формат: +375291234567 или 80441234567</small>
 
-    <input type="submit" value="Add Contact">
+    <button type="submit">Add Contact</button>
 </form>
 
 <ul id="entriesList">
-    <c:if test="${not empty requestScope.entries}">
-        <c:forEach var="entry" items="${requestScope.entries}">
-            <li>${entry.contactName}: ${entry.phoneNumber}</li>
-        </c:forEach>
-    </c:if>
-    <c:if test="${empty requestScope.entries}">
-        <li>No contacts available.</li>
-    </c:if>
+    <c:choose>
+        <c:when test="${not empty requestScope.entries}">
+            <c:forEach var="entry" items="${requestScope.entries}">
+                <li>${entry.contactName}: ${entry.phoneNumber}</li>
+            </c:forEach>
+        </c:when>
+        <c:otherwise>
+            <li>No contacts available.</li>
+        </c:otherwise>
+    </c:choose>
 </ul>
-
-<a href="${pageContext.request.contextPath}/logout">Logout</a>
 </body>
 </html>

@@ -15,6 +15,8 @@ import java.util.Map;
 
 public class TriangleAnalysisServiceImpl implements TriangleAnalysisService {
     private static final Logger logger = LogManager.getLogger(TriangleAnalysisServiceImpl.class);
+    private static final double EPSILON = 1e-10;
+
     private final TriangleValidator validator;
     private final TriangleCalculationService calculationService;
 
@@ -39,9 +41,7 @@ public class TriangleAnalysisServiceImpl implements TriangleAnalysisService {
                 }
 
                 TriangleType type = determineType(triangle);
-                if (type != null) {
-                    counts.put(type, counts.get(type) + 1);
-                }
+                counts.merge(type, 1, Integer::sum);
             } catch (TriangleException e) {
                 logger.error("Error processing triangle ID {}: {}", triangle.getId(), e.getMessage());
             }
@@ -116,17 +116,20 @@ public class TriangleAnalysisServiceImpl implements TriangleAnalysisService {
         double b = triangle.getB();
         double c = triangle.getC();
 
-        int equalSidesCount = countEqualSides(a, b, c);
+        boolean abEqual = Math.abs(a - b) < EPSILON;
+        boolean bcEqual = Math.abs(b - c) < EPSILON;
+        boolean acEqual = Math.abs(a - c) < EPSILON;
 
-        return switch (equalSidesCount) {
-            case 3 -> TriangleType.EQUILATERAL;
-            case 1 -> TriangleType.ISOSCELES;
-            case 0 -> isRightAngleTriangle(triangle) ? TriangleType.RECTANGULAR : TriangleType.ARBITRARY;
-            default -> {
-                logger.error("Unexpected equal sides count: {} for triangle ID: {}", equalSidesCount, triangle.getId());
-                yield null;
-            }
-        };
+        if (abEqual && bcEqual) {
+            return TriangleType.EQUILATERAL;
+        }
+        if (abEqual || bcEqual || acEqual) {
+            return TriangleType.ISOSCELES;
+        }
+        if (isRightAngleTriangle(triangle)) {
+            return TriangleType.RECTANGULAR;
+        }
+        return TriangleType.ARBITRARY;
     }
 
     private boolean isRightAngleTriangle(Triangle triangle) throws TriangleException {
@@ -135,19 +138,11 @@ public class TriangleAnalysisServiceImpl implements TriangleAnalysisService {
         double c = triangle.getC();
 
         return switch (findLargestSide(a, b, c)) {
-            case 0 -> Math.abs(a - Math.hypot(b, c)) < 1e-10;
-            case 1 -> Math.abs(b - Math.hypot(a, c)) < 1e-10;
-            case 2 -> Math.abs(c - Math.hypot(a, b)) < 1e-10;
+            case 0 -> Math.abs(a * a - (b * b + c * c)) < EPSILON;
+            case 1 -> Math.abs(b * b - (a * a + c * c)) < EPSILON;
+            case 2 -> Math.abs(c * c - (a * a + b * b)) < EPSILON;
             default -> false;
         };
-    }
-
-    private int countEqualSides(double a, double b, double c) {
-        int count = 0;
-        if (Math.abs(a - b) < 1e-10) count++;
-        if (Math.abs(b - c) < 1e-10) count++;
-        if (Math.abs(a - c) < 1e-10) count++;
-        return count;
     }
 
     private int findLargestSide(double a, double b, double c) {

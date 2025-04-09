@@ -46,6 +46,12 @@ public class PhoneBookServlet extends HttpServlet {
         }
     }
 
+    private void sendJsonError(HttpServletResponse response, String message, int status) throws IOException {
+        response.setStatus(status);
+        response.setContentType("application/json");
+        response.getWriter().write(String.format("{\"error\": \"%s\"}", message));
+    }
+
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response) throws IOException {
         String contactName = request.getParameter("contactName").trim();
@@ -53,37 +59,36 @@ public class PhoneBookServlet extends HttpServlet {
         Integer userId = (Integer) request.getSession().getAttribute("userId");
 
         if (userId == null) {
-            response.setStatus(HttpServletResponse.SC_UNAUTHORIZED);
-            response.getWriter().write("{\"error\": \"Требуется авторизация\"}");
+            sendJsonError(response, "Требуется авторизация", HttpServletResponse.SC_UNAUTHORIZED);
             return;
         }
 
         try {
-            // Валидация данных
+            // Валидация
             if (!Validator.validateContactName(contactName)) {
                 throw new IllegalArgumentException("Имя контакта должно быть от 2 до 50 символов");
             }
-
             if (!Validator.validatePhoneNumber(phoneNumber)) {
                 throw new IllegalArgumentException("Некорректный формат номера телефона");
             }
 
+            // Создаем и сохраняем запись
             PhoneBookEntry entry = new PhoneBookEntry(userId, contactName, phoneNumber);
             phoneBookDAO.addEntry(entry, userId);
             logger.info("Added entry: {} - {}", contactName, phoneNumber);
 
+            // Возвращаем успешный JSON с данными контакта
             response.setContentType("application/json");
-            response.getWriter().write("{\"success\": true}");
+            response.getWriter().write(String.format(
+                    "{\"success\": true, \"contactName\": \"%s\", \"phoneNumber\": \"%s\"}",
+                    contactName, phoneNumber
+            ));
+
         } catch (IllegalArgumentException e) {
-            response.setStatus(HttpServletResponse.SC_BAD_REQUEST);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"" + e.getMessage() + "\"}");
+            sendJsonError(response, e.getMessage(), HttpServletResponse.SC_BAD_REQUEST);
         } catch (SQLException e) {
-            String message = DATABASE_ERROR_TEMPLATE.formatted(e.getMessage());
-            logger.error(message);
-            response.setStatus(HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
-            response.setContentType("application/json");
-            response.getWriter().write("{\"error\": \"Ошибка базы данных. Попробуйте позже.\"}");
+            logger.error("Database error: {}", e.getMessage());
+            sendJsonError(response, "Ошибка базы данных", HttpServletResponse.SC_INTERNAL_SERVER_ERROR);
         }
     }
 

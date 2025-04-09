@@ -8,8 +8,6 @@ import java.util.Objects;
 
 public class TriangleParserImpl implements TriangleParser {
     private static final int REQUIRED_PARTS_COUNT = 4;
-    private static final String DELIMITER = ",";
-    private static final String LINE_FORMAT_MESSAGE = "Line must contain exactly 4 comma-separated values: id,sideA,sideB,sideC";
 
     @Override
     public List<Double[]> parseTriangles(List<String> lines) throws TriangleException {
@@ -33,9 +31,9 @@ public class TriangleParserImpl implements TriangleParser {
             throw new TriangleException("Empty or whitespace-only line cannot be parsed");
         }
 
-        String[] parts = trimmedLine.split(DELIMITER);
+        String[] parts = trimmedLine.split(",");
         if (parts.length != REQUIRED_PARTS_COUNT) {
-            throw new TriangleException(LINE_FORMAT_MESSAGE + ". Actual: " + trimmedLine);
+            throw new TriangleException("Line must contain exactly 4 comma-separated values: id,sideA,sideB,sideC. Actual: " + trimmedLine);
         }
 
         try {

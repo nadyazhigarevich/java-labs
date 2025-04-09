@@ -7,7 +7,6 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
-import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
 public class TriangleReaderImpl implements TriangleReader {
@@ -16,7 +15,7 @@ public class TriangleReaderImpl implements TriangleReader {
         try {
             Path path = Paths.get(filePath);
             try (Stream<String> lines = Files.lines(path)) {
-                return lines.collect(Collectors.toList());
+                return lines.toList();  
             }
         } catch (IOException e) {
             throw new TriangleException("Error reading file: " + filePath, e);

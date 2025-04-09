@@ -4,5 +4,5 @@ import com.zhigarevich.triangle.entity.Triangle;
 import com.zhigarevich.triangle.exception.TriangleException;
 
 public interface TriangleValidator {
-    boolean isValid(Triangle triangle) throws TriangleException;
+    boolean isValid(Triangle triangle);
 }
