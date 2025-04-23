@@ -1,42 +1,70 @@
 {"results": [
   {
+    "count": 0,
+    "type": "undefined"
+  },
+  {
     "largest": {
-      "sideC": 4,
+      "sideC": 5,
       "id": 3,
+      "sideB": 5,
+      "sideA": 2
+    },
+    "smallest": {
+      "sideC": 5,
+      "id": 3,
+      "sideB": 5,
+      "sideA": 2
+    },
+    "count": 1,
+    "type": "isosceles"
+  },
+  {
+    "largest": {
+      "sideC": 3,
+      "id": 0,
       "sideB": 3,
       "sideA": 3
     },
     "smallest": {
       "sideC": 3,
-      "id": 1,
+      "id": 0,
       "sideB": 3,
-      "sideA": 1
+      "sideA": 3
     },
-    "count": 2,
-    "type": "isosceles"
-  },
-  {
-    "count": 0,
+    "count": 1,
     "type": "equilateral"
-  },
-  {
-    "count": 0,
-    "type": "rectangular"
   },
   {
     "largest": {
       "sideC": 5,
-      "id": 4,
-      "sideB": 2,
-      "sideA": 4
+      "id": 2,
+      "sideB": 4,
+      "sideA": 3
     },
     "smallest": {
-      "sideC": 4,
+      "sideC": 5,
       "id": 2,
-      "sideB": 3,
-      "sideA": 2
+      "sideB": 4,
+      "sideA": 3
     },
-    "count": 2,
+    "count": 1,
+    "type": "rectangular"
+  },
+  {
+    "largest": {
+      "sideC": 6,
+      "id": 1,
+      "sideB": 4,
+      "sideA": 3
+    },
+    "smallest": {
+      "sideC": 6,
+      "id": 1,
+      "sideB": 4,
+      "sideA": 3
+    },
+    "count": 1,
     "type": "arbitrary"
   }
 ]}

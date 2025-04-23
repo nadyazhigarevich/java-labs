@@ -2,12 +2,25 @@ package com.zhigarevich.triangle.parser.impl;
 
 import com.zhigarevich.triangle.exception.TriangleException;
 import com.zhigarevich.triangle.parser.TriangleParser;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
 public class TriangleParserImpl implements TriangleParser {
     private static final int REQUIRED_PARTS_COUNT = 4;
+
+    private static TriangleParserImpl instance;
+
+    private TriangleParserImpl() {
+    }
+
+    public static TriangleParser getInstance() {
+        if (instance == null) {
+            instance = new TriangleParserImpl();
+        }
+        return instance;
+    }
 
     @Override
     public List<Double[]> parseTriangles(List<String> lines) throws TriangleException {
@@ -42,7 +55,7 @@ public class TriangleParserImpl implements TriangleParser {
             double sideB = parseSideValue(parts[2], "sideB");
             double sideC = parseSideValue(parts[3], "sideC");
 
-            return new Double[]{(double)id, sideA, sideB, sideC};
+            return new Double[]{(double) id, sideA, sideB, sideC};
         } catch (TriangleException e) {
             throw new TriangleException("Invalid data format in line: " + trimmedLine, e);
         }

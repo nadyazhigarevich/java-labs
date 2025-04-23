@@ -6,10 +6,19 @@ import com.zhigarevich.triangle.factory.TriangleFactory;
 import com.zhigarevich.triangle.validator.TriangleValidator;
 
 public class TriangleFactoryImpl implements TriangleFactory {
+
+    private static TriangleFactoryImpl instance;
     private final TriangleValidator validator;
 
-    public TriangleFactoryImpl(TriangleValidator validator) {
+    private TriangleFactoryImpl(TriangleValidator validator) {
         this.validator = validator;
+    }
+
+    public static TriangleFactory getInstance(TriangleValidator validator) {
+        if (instance == null) {
+            instance = new TriangleFactoryImpl(validator);
+        }
+        return instance;
     }
 
     @Override

@@ -16,14 +16,23 @@ import java.util.Map;
 public class TriangleAnalysisServiceImpl implements TriangleAnalysisService {
     private static final Logger logger = LogManager.getLogger(TriangleAnalysisServiceImpl.class);
     private static final double EPSILON = 1e-10;
+    private static TriangleAnalysisService instance;
 
     private final TriangleValidator validator;
     private final TriangleCalculationService calculationService;
 
-    public TriangleAnalysisServiceImpl(TriangleValidator validator,
-                                       TriangleCalculationService calculationService) {
+    private TriangleAnalysisServiceImpl(TriangleValidator validator,
+                                        TriangleCalculationService calculationService) {
         this.validator = validator;
         this.calculationService = calculationService;
+    }
+
+    public static TriangleAnalysisService getInstance(TriangleValidator validator,
+                                                      TriangleCalculationService calculationService) {
+        if (instance == null) {
+            instance = new TriangleAnalysisServiceImpl(validator, calculationService);
+        }
+        return instance;
     }
 
     @Override
@@ -121,14 +130,18 @@ public class TriangleAnalysisServiceImpl implements TriangleAnalysisService {
         boolean acEqual = Math.abs(a - c) < EPSILON;
 
         if (abEqual && bcEqual) {
+            triangle.setType(TriangleType.EQUILATERAL);
             return TriangleType.EQUILATERAL;
         }
         if (abEqual || bcEqual || acEqual) {
+            triangle.setType(TriangleType.ISOSCELES);
             return TriangleType.ISOSCELES;
         }
         if (isRightAngleTriangle(triangle)) {
+            triangle.setType(TriangleType.RECTANGULAR);
             return TriangleType.RECTANGULAR;
         }
+        triangle.setType(TriangleType.ARBITRARY);
         return TriangleType.ARBITRARY;
     }
 

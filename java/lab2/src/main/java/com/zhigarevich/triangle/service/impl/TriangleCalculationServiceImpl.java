@@ -9,10 +9,18 @@ import org.apache.logging.log4j.Logger;
 
 public class TriangleCalculationServiceImpl implements TriangleCalculationService {
     private static final Logger logger = LogManager.getLogger(TriangleCalculationServiceImpl.class);
+    private static TriangleCalculationService instance;
     private final TriangleValidator validator;
 
-    public TriangleCalculationServiceImpl(TriangleValidator validator) {
+    private TriangleCalculationServiceImpl(TriangleValidator validator) {
         this.validator = validator;
+    }
+
+    public static TriangleCalculationService getInstance(TriangleValidator validator) {
+        if (instance == null) {
+            instance = new TriangleCalculationServiceImpl(validator);
+        }
+        return instance;
     }
 
     @Override

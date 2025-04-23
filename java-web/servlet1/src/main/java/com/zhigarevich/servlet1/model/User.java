@@ -1,6 +1,6 @@
 package com.zhigarevich.servlet1.model;
 
-public class User {
+public class User extends AbstractEntity {
     private int id;
     private String username;
     private String password;

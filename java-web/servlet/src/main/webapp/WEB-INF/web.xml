@@ -15,7 +15,7 @@
 
     <servlet>
         <servlet-name>mainServlet</servlet-name>
-        <servlet-class>com.zhigarevich.servlet.MainServlet</servlet-class>
+        <servlet-class>com.zhigarevich.phonebook.servlet.MainServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>mainServlet</servlet-name>
@@ -24,7 +24,7 @@
 
     <servlet>
         <servlet-name>loginServlet</servlet-name>
-        <servlet-class>com.zhigarevich.servlet.LoginServlet</servlet-class>
+        <servlet-class>com.zhigarevich.phonebook.servlet.LoginServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>loginServlet</servlet-name>
@@ -36,7 +36,7 @@
 
     <servlet>
         <servlet-name>phoneBookServlet</servlet-name>
-        <servlet-class>com.zhigarevich.servlet.PhoneBookServlet</servlet-class>
+        <servlet-class>com.zhigarevich.phonebook.servlet.PhoneBookServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>phoneBookServlet</servlet-name>

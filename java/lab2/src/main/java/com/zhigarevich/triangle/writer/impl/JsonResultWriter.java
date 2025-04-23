@@ -15,6 +15,18 @@ import java.util.Map;
 public class JsonResultWriter implements ResultWriter {
     private static final String OUTPUT_FILE = "data/triangle_results.json";
 
+    private static ResultWriter instance;
+
+    private JsonResultWriter() {
+    }
+
+    public static ResultWriter getInstance() {
+        if (instance == null) {
+            instance = new JsonResultWriter();
+        }
+        return instance;
+    }
+
     @Override
     public void writeResults(Map<TriangleType, Integer> counts,
                              Map<TriangleType, Triangle> largest,

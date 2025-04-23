@@ -4,6 +4,19 @@ import com.zhigarevich.triangle.entity.Triangle;
 import com.zhigarevich.triangle.validator.TriangleValidator;
 
 public class TriangleValidatorImpl implements TriangleValidator {
+
+    private static TriangleValidator instance;
+
+    private TriangleValidatorImpl() {
+    }
+
+    public static TriangleValidator getInstance() {
+        if (instance == null) {
+            instance = new TriangleValidatorImpl();
+        }
+        return instance;
+    }
+
     public boolean isValid(Triangle triangle) {
         double a = triangle.getA();
         double b = triangle.getB();

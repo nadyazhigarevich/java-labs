@@ -1,10 +1,14 @@
 package com.zhigarevich.triangle.entity;
 
+import com.zhigarevich.triangle.observer.TriangleObserver;
+
 public class Triangle {
     private int id;
     private double a;
     private double b;
     private double c;
+    private TriangleType type = TriangleType.UNDEFINED;
+    private TriangleObserver observer = TriangleObserver.getInstance();
 
     public Triangle() {
     }
@@ -16,66 +20,80 @@ public class Triangle {
         this.c = c;
     }
 
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
+
+    }
+
     public double getA() {
         return a;
+    }
+
+    public void setA(double a) {
+        this.a = a;
+        observer.put(this);
     }
 
     public double getB() {
         return b;
     }
 
+    public void setB(double b) {
+        this.b = b;
+        observer.put(this);
+    }
+
     public double getC() {
         return c;
     }
 
-    public int getId() {
-        return id;
-    }
-
-    public void setA(double a) {
-        this.a = a;
-    }
-
-    public void setB(double b) {
-        this.b = b;
-    }
-
     public void setC(double c) {
         this.c = c;
+        observer.put(this);
     }
 
-    public void setId(int id) {
-        this.id = id;
+    public TriangleType getType() {
+        return type;
+    }
+
+    public void setType(TriangleType type) {
+        this.type = type;
     }
 
     @Override
     public boolean equals(Object o) {
-        if (o == null || o.getClass() != getClass()) return false;
+        if (o == null || getClass() != o.getClass()) return false;
         Triangle triangle = (Triangle) o;
-        return a == triangle.a && b == triangle.b && c == triangle.c && id == triangle.id;
+        return id == triangle.id && Double.compare(a, triangle.a) == 0 && Double.compare(b, triangle.b) == 0 && Double.compare(c, triangle.c) == 0 && type == triangle.type;
     }
 
     @Override
     public int hashCode() {
-        int result = 17;
-        long tempA = Double.doubleToLongBits(a);
-        long tempB = Double.doubleToLongBits(b);
-        long tempC = Double.doubleToLongBits(c);
-        result = 31 * result + (int) (tempA ^ (tempA >>> 32));
-        result = 31 * result + (int) (tempB ^ (tempB >>> 32));
-        result = 31 * result + (int) (tempC ^ (tempC >>> 32));
-        result = 31 * result + id;
+        int result;
+        long temp;
+        result = id;
+        temp = Double.doubleToLongBits(a);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(b);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        temp = Double.doubleToLongBits(c);
+        result = 31 * result + (int) (temp ^ (temp >>> 32));
+        result = 31 * result + (type != null ? type.hashCode() : 0);
         return result;
     }
 
     @Override
     public String toString() {
-        StringBuilder sb = new StringBuilder();
-        sb.append("Triangle{");
+        final StringBuilder sb = new StringBuilder("Triangle{");
         sb.append("id=").append(id);
         sb.append(", a=").append(a);
         sb.append(", b=").append(b);
         sb.append(", c=").append(c);
+        sb.append(", type=").append(type);
         sb.append('}');
         return sb.toString();
     }

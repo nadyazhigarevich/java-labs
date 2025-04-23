@@ -1,6 +1,7 @@
 package com.zhigarevich.triangle.entity;
 
 public enum TriangleType {
+    UNDEFINED,
     ISOSCELES,
     EQUILATERAL,
     RECTANGULAR,
