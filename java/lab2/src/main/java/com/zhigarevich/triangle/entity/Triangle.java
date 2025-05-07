@@ -35,7 +35,7 @@ public class Triangle {
 
     public void setA(double a) {
         this.a = a;
-        observer.put(this);
+        observer.changed(this);
     }
 
     public double getB() {
@@ -44,7 +44,7 @@ public class Triangle {
 
     public void setB(double b) {
         this.b = b;
-        observer.put(this);
+        observer.changed(this);
     }
 
     public double getC() {
@@ -53,7 +53,7 @@ public class Triangle {
 
     public void setC(double c) {
         this.c = c;
-        observer.put(this);
+        observer.changed(this);
     }
 
     public TriangleType getType() {

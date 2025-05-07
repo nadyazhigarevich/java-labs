@@ -10,31 +10,26 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
 public class TriangleObserver {
-
     private static final Logger log = LogManager.getLogger(TriangleObserver.class);
     private static TriangleObserver instance;
-    private final TriangleWarehouse warehouse;
-    private final TriangleCalculationService calculationService;
 
-    private TriangleObserver(){
-        this.warehouse = TriangleWarehouse.getInstance();
-        var validator = TriangleValidatorImpl.getInstance();
-        this.calculationService = TriangleCalculationServiceImpl.getInstance(validator);
-    }
-
-    public static TriangleObserver getInstance(){
+    public static TriangleObserver getInstance() {
         if (instance == null) {
             instance = new TriangleObserver();
         }
         return instance;
     }
 
-    public void put(Triangle triangle) {
+    public void changed(Triangle triangle) {
         log.debug("Observer works");
+        TriangleWarehouse warehouse = TriangleWarehouse.getInstance();
+        TriangleValidatorImpl validator = (TriangleValidatorImpl) TriangleValidatorImpl.getInstance();
+        TriangleCalculationService calculationService = TriangleCalculationServiceImpl.getInstance(validator);
+
         try {
-            var perimeter = this.calculationService.calculatePerimeter(triangle);
-            var area = this.calculationService.calculateArea(triangle);
-            this.warehouse.put(triangle.getId(), area, perimeter);
+            var perimeter = calculationService.calculatePerimeter(triangle);
+            var area = calculationService.calculateArea(triangle);
+            warehouse.put(triangle.getId(), area, perimeter);
         } catch (TriangleException e) {
             log.error(e);
         }
