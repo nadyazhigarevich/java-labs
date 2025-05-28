@@ -1,9 +1,9 @@
 package com.zhigarevich.text.interpreter.polish;
 
 import com.zhigarevich.text.interpreter.AbstractExpression;
+import com.zhigarevich.text.interpreter.ExpressionContext;
 import com.zhigarevich.text.interpreter.impl.nonterminal.*;
 import com.zhigarevich.text.interpreter.impl.terminal.NumberExpression;
-import com.zhigarevich.text.interpreter.ExpressionContext;
 import java.util.List;
 
 public class PolishNotationCalculator {

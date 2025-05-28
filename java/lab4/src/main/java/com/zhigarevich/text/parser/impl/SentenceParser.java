@@ -1,6 +1,7 @@
 package com.zhigarevich.text.parser.impl;
 
-import com.zhigarevich.text.model.Sentence;
+import com.zhigarevich.text.model.Lexeme;
+import com.zhigarevich.text.model.Symbol;
 import com.zhigarevich.text.model.TextComponent;
 import com.zhigarevich.text.parser.AbstractTextParser;
 import java.util.regex.Matcher;
@@ -16,7 +17,7 @@ public class SentenceParser extends AbstractTextParser {
 
     @Override
     public TextComponent parse(String text) {
-        Sentence sentence = new Sentence();
+        com.zhigarevich.text.model.Sentence sentence = new com.zhigarevich.text.model.Sentence();
         Pattern pattern = Pattern.compile(getRegex());
         Matcher matcher = pattern.matcher(text);
 

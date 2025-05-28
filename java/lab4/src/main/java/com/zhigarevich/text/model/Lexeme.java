@@ -42,11 +42,6 @@ public class Lexeme implements TextComponent {
     }
 
     @Override
-    public String toStructuredString() {
-        return this.toString();
-    }
-
-    @Override
     public int count() {
         return words.size();
     }

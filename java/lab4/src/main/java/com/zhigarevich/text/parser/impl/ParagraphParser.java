@@ -3,9 +3,11 @@ package com.zhigarevich.text.parser.impl;
 import com.zhigarevich.text.model.Paragraph;
 import com.zhigarevich.text.model.TextComponent;
 import com.zhigarevich.text.parser.AbstractTextParser;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ParagraphParser extends AbstractTextParser {
-    private static final String SENTENCE_REGEX = "(?<=[.!?])\\s+(?=[A-ZА-Я])";
+    private static final String SENTENCE_REGEX = "[^.!?]+([.!?]|(\\.\\.\\.))";
 
     @Override
     protected String getRegex() {
@@ -15,19 +17,14 @@ public class ParagraphParser extends AbstractTextParser {
     @Override
     public TextComponent parse(String text) {
         Paragraph paragraph = new Paragraph();
-        String[] sentences = text.split(getRegex());
+        Pattern pattern = Pattern.compile(getRegex());
+        Matcher matcher = pattern.matcher(text);
 
-        for (String sentenceText : sentences) {
-            sentenceText = sentenceText.trim();
-            if (!sentenceText.isEmpty()) {
-                // Добавляем точку, если предложение заканчивается на букву
-                if (Character.isLetter(sentenceText.charAt(sentenceText.length()-1))) {
-                    sentenceText += ".";
-                }
-                TextComponent sentence = parseNext(sentenceText);
-                if (sentence != null) {
-                    paragraph.add(sentence);
-                }
+        while (matcher.find()) {
+            String sentenceText = matcher.group().trim();
+            TextComponent sentence = parseNext(sentenceText);
+            if (sentence != null) {
+                paragraph.add(sentence);
             }
         }
         return paragraph;

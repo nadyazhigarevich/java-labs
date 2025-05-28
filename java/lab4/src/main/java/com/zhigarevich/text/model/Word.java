@@ -13,11 +13,6 @@ public class Word implements TextComponent {
     }
 
     @Override
-    public String toStructuredString() {
-        return this.toString();
-    }
-
-    @Override
     public void remove(TextComponent component) {
         symbols.remove(component);
     }

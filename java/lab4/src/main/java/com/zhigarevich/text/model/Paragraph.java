@@ -2,7 +2,6 @@ package com.zhigarevich.text.model;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.stream.Collectors;
 
 public class Paragraph implements TextComponent {
     private List<TextComponent> sentences = new ArrayList<>();
@@ -30,16 +29,11 @@ public class Paragraph implements TextComponent {
 
     @Override
     public String toString() {
-        return sentences.stream()
-                .map(TextComponent::toString)
-                .collect(Collectors.joining(" "));
-    }
-
-    @Override
-    public String toStructuredString() {
-        return sentences.stream()
-                .map(TextComponent::toStructuredString)
-                .collect(Collectors.joining(" "));
+        StringBuilder builder = new StringBuilder();
+        for (TextComponent sentence : sentences) {
+            builder.append(sentence.toString()).append(" ");
+        }
+        return builder.toString().trim();
     }
 
     @Override

@@ -8,7 +8,7 @@ import com.zhigarevich.text.parser.AbstractTextParser;
 public class WordParser extends AbstractTextParser {
     @Override
     protected String getRegex() {
-        return null;
+        return null; // Не используется для WordParser
     }
 
     @Override

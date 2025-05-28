@@ -49,9 +49,4 @@ public class Symbol implements TextComponent {
     public char getSymbol() {
         return symbol;
     }
-
-    @Override
-    public String toStructuredString() {
-        return this.toString();
-    }
 }

@@ -3,6 +3,7 @@ package com.zhigarevich.text.service.impl;
 import com.zhigarevich.text.model.*;
 import com.zhigarevich.text.service.SentenceService;
 import com.zhigarevich.text.service.WordService;
+
 import java.util.*;
 
 public class SentenceServiceImpl implements SentenceService {
@@ -33,31 +34,23 @@ public class SentenceServiceImpl implements SentenceService {
 
     @Override
     public TextComponent removeShortSentences(TextComponent text, int minWordCount) {
-        Document result = new Document();
+        Document newDocument = new Document();
 
         for (TextComponent paragraph : text.getChildren()) {
             Paragraph newParagraph = new Paragraph();
 
             for (TextComponent sentence : paragraph.getChildren()) {
-                if (countWordsInSentence(sentence) >= minWordCount) {
+                if (sentence.getChildren().size() >= minWordCount) {
                     newParagraph.add(sentence);
                 }
             }
 
             if (newParagraph.getChildren().size() > 0) {
-                result.add(newParagraph);
+                newDocument.add(newParagraph);
             }
         }
 
-        return result;
-    }
-
-    private int countWordsInSentence(TextComponent sentence) {
-        int count = 0;
-        for (TextComponent lexeme : sentence.getChildren()) {
-            count += lexeme.getChildren().size();
-        }
-        return count;
+        return newDocument;
     }
 
     private boolean containsWordOfLength(TextComponent sentence, int length) {
