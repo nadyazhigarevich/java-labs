@@ -3,7 +3,7 @@ package com.zhigarevich.text.interpreter;
 import java.util.ArrayDeque;
 
 public class ExpressionContext {
-    private ArrayDeque<Double> values = new ArrayDeque<>();
+    private final ArrayDeque<Double> values = new ArrayDeque<>();
 
     public Double popValue() {
         return values.pop();

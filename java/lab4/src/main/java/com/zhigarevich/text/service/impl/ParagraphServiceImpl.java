@@ -1,8 +1,12 @@
 package com.zhigarevich.text.service.impl;
 
-import com.zhigarevich.text.model.*;
+import com.zhigarevich.text.model.Document;
+import com.zhigarevich.text.model.TextComponent;
 import com.zhigarevich.text.service.ParagraphService;
-import java.util.*;
+
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class ParagraphServiceImpl implements ParagraphService {
     @Override

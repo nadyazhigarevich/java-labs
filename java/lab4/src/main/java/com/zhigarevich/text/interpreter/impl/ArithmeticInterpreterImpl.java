@@ -3,6 +3,7 @@ package com.zhigarevich.text.interpreter.impl;
 import com.zhigarevich.text.interpreter.ExpressionInterpreter;
 import com.zhigarevich.text.interpreter.polish.PolishNotationCalculator;
 import com.zhigarevich.text.interpreter.polish.PolishNotationParser;
+
 import java.util.List;
 
 public class ArithmeticInterpreterImpl implements ExpressionInterpreter {

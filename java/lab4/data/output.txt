@@ -1,4 +1,4 @@
-Результат сортировки абзацев:
+=== Результат сортировки абзацев ===
 Remaining -3-5 essentially 6*9/(3+4) unchanged.
 Lorem Ipsum.
 When looking at its layout.
@@ -6,14 +6,20 @@ Making it look like readable English.
 At its layout.
 Bye.
 
-Предложения с самыми длинными словами:
+
+=== Предложения с самыми длинными словами ===
 Remaining -3-5 essentially 6*9/(3+4) unchanged.
 
-Текст после удаления коротких предложений:
+
+=== Текст после удаления коротких предложений (менее 3 слов) ===
 Remaining -3-5 essentially 6*9/(3+4) unchanged.
 When looking at its layout.
 Making it look like readable English.
 At its layout.
 
-Количество одинаковых слов: 3
+
+=== Количество повторяющихся слов ===
+3
+
+=== Количество букв ===
 Гласные: 43, Согласные: 63

@@ -1,10 +1,13 @@
 package com.zhigarevich.text.service.impl;
 
-import com.zhigarevich.text.model.*;
+import com.zhigarevich.text.model.Document;
+import com.zhigarevich.text.model.Paragraph;
+import com.zhigarevich.text.model.TextComponent;
 import com.zhigarevich.text.service.SentenceService;
 import com.zhigarevich.text.service.WordService;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
 
 public class SentenceServiceImpl implements SentenceService {
     @Override

@@ -1,7 +1,10 @@
 package com.zhigarevich.text.repository.impl;
 
-import com.zhigarevich.text.model.*;
+import com.zhigarevich.text.model.Document;
+import com.zhigarevich.text.model.Paragraph;
+import com.zhigarevich.text.model.TextComponent;
 import com.zhigarevich.text.repository.TextRepository;
+
 import java.util.*;
 import java.util.stream.Collectors;
 

@@ -2,7 +2,10 @@ package com.zhigarevich.text.service.impl;
 
 import com.zhigarevich.text.model.Document;
 import com.zhigarevich.text.model.TextComponent;
-import com.zhigarevich.text.service.*;
+import com.zhigarevich.text.service.ParagraphService;
+import com.zhigarevich.text.service.SentenceService;
+import com.zhigarevich.text.service.TextOperationService;
+import com.zhigarevich.text.service.WordService;
 
 import java.util.Map;
 

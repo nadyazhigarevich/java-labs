@@ -1,10 +1,10 @@
 package com.zhigarevich.text;
 
-import com.zhigarevich.text.model.*;
-import com.zhigarevich.text.parser.*;
+import com.zhigarevich.text.model.TextComponent;
+import com.zhigarevich.text.parser.Parser;
 import com.zhigarevich.text.parser.chain.ParserChainBuilder;
-import com.zhigarevich.text.service.*;
-import com.zhigarevich.text.service.impl.*;
+import com.zhigarevich.text.service.TextOperationService;
+import com.zhigarevich.text.service.impl.TextOperationServiceImpl;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 
@@ -20,41 +20,36 @@ public class Application {
 
     public static void main(String[] args) {
         try {
-            // 1. Чтение файла
             String text = readFile(INPUT_FILE);
             logger.info("Файл успешно прочитан");
 
-            // 2. Парсинг текста
             Parser parser = ParserChainBuilder.buildParserChain();
             TextComponent document = parser.parse(text);
             logger.info("Текст успешно распарсен");
 
-            // 3. Обработка текста
             TextOperationService service = new TextOperationServiceImpl();
 
-            // Пример выполнения операций:
-            // a) Сортировка абзацев
+            Files.deleteIfExists(Paths.get(OUTPUT_FILE));
+
             TextComponent sortedText = service.sortParagraphsBySentenceCount(document);
-            writeResultToFile("Результат сортировки абзацев:", sortedText);
+            writeResultToFile("=== Результат сортировки абзацев ===", sortedText);
 
-            // b) Предложения с самыми длинными словами
             TextComponent longWordSentences = service.findSentencesWithLongestWord(document);
-            writeResultToFile("\nПредложения с самыми длинными словами:", longWordSentences);
+            writeResultToFile("\n=== Предложения с самыми длинными словами ===", longWordSentences);
 
-            // c) Удаление коротких предложений
             TextComponent filteredText = service.removeShortSentences(document, 3);
-            writeResultToFile("\nТекст после удаления коротких предложений:", filteredText);
+            writeResultToFile("\n=== Текст после удаления коротких предложений (менее 3 слов) ===", filteredText);
 
-            // d) Подсчет одинаковых слов
             int sameWordsCount = service.countSameWords(document);
+            String sameWordsResult = String.format("\n=== Количество повторяющихся слов ===\n%d\n", sameWordsCount);
             Files.write(Paths.get(OUTPUT_FILE),
-                    ("\nКоличество одинаковых слов: " + sameWordsCount).getBytes(),
+                    sameWordsResult.getBytes(),
                     java.nio.file.StandardOpenOption.APPEND);
 
-            // e) Подсчет гласных/согласных
             String vowelsConsonants = service.countVowelsAndConsonants(document);
+            String lettersResult = String.format("\n=== Количество букв ===\n%s\n", vowelsConsonants);
             Files.write(Paths.get(OUTPUT_FILE),
-                    ("\n" + vowelsConsonants).getBytes(),
+                    lettersResult.getBytes(),
                     java.nio.file.StandardOpenOption.APPEND);
 
             logger.info("Обработка текста завершена. Результаты в файле " + OUTPUT_FILE);
@@ -70,8 +65,15 @@ public class Application {
     }
 
     private static void writeResultToFile(String header, TextComponent text) throws IOException {
-        String result = header + "\n" + text.toString() + "\n";
-        Files.write(Paths.get(OUTPUT_FILE),
+        String result = header + "\n" + text.toString() + "\n\n";
+        Path outputPath = Paths.get(OUTPUT_FILE);
+
+        if (!Files.exists(outputPath)) {
+            Files.createDirectories(outputPath.getParent());
+            Files.createFile(outputPath);
+        }
+
+        Files.write(outputPath,
                 result.getBytes(),
                 java.nio.file.StandardOpenOption.CREATE,
                 java.nio.file.StandardOpenOption.APPEND);

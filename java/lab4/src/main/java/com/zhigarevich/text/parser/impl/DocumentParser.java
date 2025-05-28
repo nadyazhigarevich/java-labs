@@ -3,6 +3,7 @@ package com.zhigarevich.text.parser.impl;
 import com.zhigarevich.text.model.Document;
 import com.zhigarevich.text.model.TextComponent;
 import com.zhigarevich.text.parser.AbstractTextParser;
+
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

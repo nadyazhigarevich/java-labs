@@ -1,8 +1,10 @@
 package com.zhigarevich.text.service.impl;
 
-import com.zhigarevich.text.model.*;
+import com.zhigarevich.text.model.TextComponent;
 import com.zhigarevich.text.service.WordService;
-import java.util.*;
+
+import java.util.HashMap;
+import java.util.Map;
 
 public class WordServiceImpl implements WordService {
     @Override

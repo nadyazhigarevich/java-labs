@@ -22,7 +22,7 @@ public class BitwiseShiftExpression extends AbstractExpression {
             case ">":
                 context.pushValue((double) (left >> right));
                 break;
-            case "R": // Для >>> (заменяется на R при парсинге)
+            case "R":
                 context.pushValue((double) (left >>> right));
                 break;
             default:
